@@ -1,4 +1,5 @@
 import random
+import math
 
 class Hammurabi:
     def __init__(self):
@@ -39,10 +40,20 @@ class Hammurabi:
             Land is currently worth {land_value} bushels per acre
             """)
 
-            # land_business = input("How many acres of land do you want to buy/negative if you want to sell\n")
-            land_bought = Hammurabi.askHowManyAcresToBuy(land_value,bushels)
-            bushels = bushels - (land_bought*land_value)
-            land = land_bought + land
+            land_decision = True
+            buy_or_sell = input("Do you want to buy or sell land\n").lower()
+            while land_decision:
+                if buy_or_sell == 'buy':
+                    land_bought = Hammurabi.askHowManyAcresToBuy(land_value,bushels)
+                    bushels = bushels - (land_bought*land_value)
+                    land = land_bought + land
+                    land_decision = False
+                elif buy_or_sell == 'sell':
+                    land_sold = Hammurabi.askHowManyAcresToSell(land)
+                    land = land - land_sold
+                    bushels = bushels + (land_sold*land_value)
+                else:
+                    buy_or_sell = input("You daft?? Do you want to buy or sell land choose one\n").lower()
 
             year+=1
 
@@ -60,18 +71,16 @@ class Hammurabi:
     def askHowManyAcresToBuy(price, bushels):
         land_bought = input("How many acres of land do you want to buy?\n")
         while (int(land_bought)*price) > bushels:
-            print("Jedi mind tricks don't work, I can see how much you have")
+            print(f"Jedi mind tricks don't work, I can see how much you have the most you can buy is {math.floor(bushels/price)} acres")
             land_bought = input("How many acres of land do you want to buy?\n")
-        
         return int (land_bought)
     
     def askHowManyAcresToSell(acres_owned):
         land_sold = input("How many acres of land do you want to sell?\n")
         while int (land_sold) > acres_owned:
             print(f"Imaginary land doesn't count, you only have {acres_owned} acres")
-            land_bought = input("How many acres of land do you want to buy?\n")
-        
-        return int (land_bought)
+            land_sold = input("How many acres of land do you want to sell?\n")
+        return int (land_sold)
     
 
 
