@@ -59,6 +59,12 @@ class Hammurabi:
             grain_to_feed = Hammurabi.askHowMuchGrainToFeedPeople(bushels)
             bushels = bushels - grain_to_feed
 
+            acers_planted = Hammurabi.askHowManyAcresToPlant(land, population, bushels)
+            
+            plague_death = Hammurabi.plagueDeaths(population)
+            population = population - plague_death
+            print(f"The plague ushered {plague_death} people to the after life, you have {population} citizens\n")
+
 
             """
                 Last part of the code
@@ -98,7 +104,34 @@ class Hammurabi:
         return int(how_much_feed)
     
     def askHowManyAcresToPlant(acers_owned, population, bushels):
-        how_much_to_plant = input("How many acres do you want to plant grain?")
+        how_much_to_plant = input("How many acres do you want to plant grain?\n")
+        while (int (how_much_to_plant) > acers_owned or 
+        math.floor(int (how_much_to_plant)/population) > 20 or
+        math.floor(int (how_much_to_plant)/bushels) > 2
+        ):
+            if int (how_much_to_plant) > acers_owned:
+                print(f"Aim for the bushes doesn't me the starts, you only have {acers_owned} acers")
+            elif math.floor(int (how_much_to_plant)/population) > 20:
+                print(f"Look again, you don't have the manpower, only {population} citizens remain, you can plant upto {population*20} acers")
+            elif math.floor(int (how_much_to_plant)/bushels) > 2:
+                print(f"Check your coffers lad, you can plan {bushels*2} acers")
+            how_much_to_plant = input("How many acres do you want to plant grain?\n")
+        return int (how_much_to_plant)
+
+    def plagueDeaths(population):
+        if random.randint(0,99) < 15:
+            return population/2
+        else:
+            return population
+    
+    def starvationDeaths(population, bushelsFedToPeople):
+        if math.floor(bushelsFedToPeople/population) < 20:
+            return 20 - bushelsFedToPeople/population
+        else:
+            return 0
+        
+
+
         
 
 
