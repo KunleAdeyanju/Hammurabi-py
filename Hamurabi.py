@@ -40,7 +40,7 @@ class Hammurabi:
             Land is currently worth {land_value} bushels per acre
             """)
 
-            land_decision = True
+            land_decision = True # trigger to move on from buy or sell condition
             buy_or_sell = input("Do you want to buy or sell land\n").lower()
             while land_decision:
                 if buy_or_sell == 'buy':
@@ -52,9 +52,17 @@ class Hammurabi:
                     land_sold = Hammurabi.askHowManyAcresToSell(land)
                     land = land - land_sold
                     bushels = bushels + (land_sold*land_value)
+                    land_decision = False
                 else:
                     buy_or_sell = input("You daft?? Do you want to buy or sell land choose one\n").lower()
 
+            grain_to_feed = Hammurabi.askHowMuchGrainToFeedPeople(bushels)
+            bushels = bushels - grain_to_feed
+
+
+            """
+                Last part of the code
+            """
             year+=1
 
             if year == 4:
@@ -82,6 +90,16 @@ class Hammurabi:
             land_sold = input("How many acres of land do you want to sell?\n")
         return int (land_sold)
     
+    def askHowMuchGrainToFeedPeople(bushels):
+        how_much_feed = input("How many bushels do you wish to feed your people?\n")
+        while int(how_much_feed) > bushels:
+            print(f"Why oh why must you test me? You have {bushels} bushels")
+            how_much_feed = input("How many bushels do you wish to feed your people?\n")
+        return int(how_much_feed)
+    
+    def askHowManyAcresToPlant(acers_owned, population, bushels):
+        how_much_to_plant = input("How many acres do you want to plant grain?")
+        
 
 
 if __name__ == "__main__":
