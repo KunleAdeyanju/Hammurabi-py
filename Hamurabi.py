@@ -1,3 +1,4 @@
+import os
 import random
 import math
 
@@ -65,13 +66,34 @@ class Hammurabi:
             population = population - plague_death
             print(f"The plague ushered {plague_death} people to the after life, you have {population} citizens\n")
 
+            starvation_deaths = Hammurabi.starvationDeaths(population,grain_to_feed)
+            population = population - starvation_deaths
+            print(f"{starvation_deaths} people have died due to starvation, {population} people remain")
+            uprising_happening = Hammurabi.uprising(population, starvation_deaths)
+            if uprising_happening:
+                king_alive = False
+                print(f"You Starved too many people, they revolted, your reign lases {year} years")
+            
+            input("Press enter to continue....")
 
             """
                 Last part of the code
             """
             year+=1
 
-            if year == 4:
+            if year == 11:
+                print("You served your full term as king impressive, here are your ending stats\n")
+                print(f"""
+            O great Hammurabi!
+            You are in year {year} of your ten year rule.
+            In the previous year {deaths} people starved to death.
+            In the previous year {immigrants} poeple entered the kingdom.
+            The poplulation is now {population}.
+            We harvested {harvet} bushels at {harvet_per_acre} per acre.
+            Rats destroyed {bushels_rats_ate}, leaving {bushels} bushels in storage.
+            The city owns {land} acres of land.
+            Land is currently worth {land_value} bushels per acre
+            """)
                 finish_game = False
 
                 
@@ -129,6 +151,9 @@ class Hammurabi:
             return 20 - bushelsFedToPeople/population
         else:
             return 0
+    
+    def uprising(population, howManyPeopleStarved):
+        return (howManyPeopleStarved/population)*100 < 45
         
 
 
