@@ -73,7 +73,14 @@ class Hammurabi:
                 if uprising_happening:
                         print(f"You Starved too many people, they revolted")
                         king_dead = Hammurabi.game_over(year, population, land)
-                        
+            
+            if starvation_deaths == 0:
+                immigrants = Hammurabi.immigration(population, land, bushels)
+                population = population + immigrants
+            
+            bushels = Hammurabi.grainEatenByRats(bushels)
+            bushels = Hammurabi.granaryOfDivineYield(bushels)
+            
 
             plague_death = Hammurabi.plagueDeaths(population)
             population = population - plague_death
@@ -161,7 +168,7 @@ class Hammurabi:
             return int (0)
     
     def uprising(population, howManyPeopleStarved):
-        return int ((howManyPeopleStarved/population)*100 > 45)
+        return (howManyPeopleStarved/population)*100 > 45
     
     def game_over(year, population, land):
         print(f"""
@@ -176,8 +183,31 @@ class Hammurabi:
         print(f"Your harvet yeilded {bushels_per_acre} bushels per acre for a total of {bushels_per_acre * acres} acres")
         return int (bushels_per_acre * acres)
         
-
-
+    def grainEatenByRats(bushels):
+        if random.randint(0,99) < 40:
+            bushels_lost = random.randint(10,30)
+            print("Rats have ran wild through your coffers, talk about bad luck...or bad hygine\n")
+            print(f"They have gotten to roughly {bushels_lost}% of your storage")
+            return math.floor((bushels_lost/100)* bushels)
+        else:
+            print("Congrtulations, your citizens kept up the sanitation standards, you've averted Rats this year")
+            return int (bushels)
+        
+    def granaryOfDivineYield(bushels):
+        if random.randint(0,99) < 3:
+            blessing = random.random(800,10000)
+            print("You have recieved the blessing of The Granary of Divine Yield\n")
+            print(f"You recieved a {blessing} bushels investment, treat you citizens well")
+            return int (blessing + bushels)
+        else:
+            return bushels
+    
+    def immigration(population, acresOwned, grainInStorage):
+        people_coming = math.floor((20 * (acresOwned + grainInStorage)/ (100*population)) + 1)
+        print(f"Good stewardship leads to more responsibiliteies, {people_coming} people are moving to your well run kingdom")
+        return people_coming
+     
+     #def ratKingManifestation():
         
 
 
