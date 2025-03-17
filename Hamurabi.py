@@ -24,8 +24,8 @@ class Hammurabi:
         rats = 0
         bushels_rats_ate = 0
 
-        king_dead = False
-        finish_game = True
+        king_dead = False   # if true end the game
+        finish_game = True  # turns false when youu hit year 10
 
         
         while not king_dead and finish_game:
@@ -61,6 +61,8 @@ class Hammurabi:
             bushels = bushels - grain_to_feed
 
             acers_planted = Hammurabi.askHowManyAcresToPlant(land, population, bushels)
+            harvest_collected = Hammurabi.harvest(acers_planted)
+            bushels = bushels + harvest_collected
 
             starvation_deaths = Hammurabi.starvationDeaths(population,grain_to_feed)
             population = population - starvation_deaths
@@ -150,16 +152,16 @@ class Hammurabi:
         if random.randint(0,99) < 15:
             return math.floor(population/2)
         else:
-            return population
+            return int (population)
     
     def starvationDeaths(population, bushelsFedToPeople):
         if math.floor(bushelsFedToPeople/population) < 20:
-            return 20 - bushelsFedToPeople/population
+            return int (20 - bushelsFedToPeople/population)
         else:
-            return 0
+            return int (0)
     
     def uprising(population, howManyPeopleStarved):
-        return (howManyPeopleStarved/population)*100 > 45
+        return int ((howManyPeopleStarved/population)*100 > 45)
     
     def game_over(year, population, land):
         print(f"""
@@ -168,6 +170,11 @@ class Hammurabi:
             Your poplulation ended at {population} citizens.
             Your city owned {land} acres of land.
             """)
+    
+    def harvest(acres):
+        bushels_per_acre = random.randint(1,6)
+        print(f"Your harvet yeilded {bushels_per_acre} bushels per acre for a total of {bushels_per_acre * acres} acres")
+        return int (bushels_per_acre * acres)
         
 
 
