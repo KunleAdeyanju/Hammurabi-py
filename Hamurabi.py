@@ -24,11 +24,11 @@ class Hammurabi:
         rats = 0
         bushels_rats_ate = 0
 
-        king_alive = True
+        king_dead = False
         finish_game = True
 
         
-        while king_alive and finish_game:
+        while not king_dead and finish_game:
             print(f"""
             O great Hammurabi!
             You are in year {year} of your ten year rule.
@@ -61,18 +61,23 @@ class Hammurabi:
             bushels = bushels - grain_to_feed
 
             acers_planted = Hammurabi.askHowManyAcresToPlant(land, population, bushels)
-            
-            plague_death = Hammurabi.plagueDeaths(population)
-            population = population - plague_death
-            print(f"The plague ushered {plague_death} people to the after life, you have {population} citizens\n")
 
             starvation_deaths = Hammurabi.starvationDeaths(population,grain_to_feed)
             population = population - starvation_deaths
             print(f"{starvation_deaths} people have died due to starvation, {population} people remain")
-            uprising_happening = Hammurabi.uprising(population, starvation_deaths)
-            if uprising_happening:
-                king_alive = False
-                print(f"You Starved too many people, they revolted, your reign lases {year} years")
+            
+            if starvation_deaths > 0:
+                uprising_happening = Hammurabi.uprising(population, starvation_deaths)
+                if uprising_happening:
+                        print(f"You Starved too many people, they revolted")
+                        king_dead = Hammurabi.game_over(year, population, land)
+                        
+
+            plague_death = Hammurabi.plagueDeaths(population)
+            population = population - plague_death
+            print(f"The plague ushered {plague_death} people to the after life, you have {population} citizens\n")
+            
+            
             
             input("Press enter to continue....")
 
@@ -84,17 +89,18 @@ class Hammurabi:
             if year == 11:
                 print("You served your full term as king impressive, here are your ending stats\n")
                 print(f"""
-            O great Hammurabi!
-            You are in year {year} of your ten year rule.
-            In the previous year {deaths} people starved to death.
-            In the previous year {immigrants} poeple entered the kingdom.
-            The poplulation is now {population}.
-            We harvested {harvet} bushels at {harvet_per_acre} per acre.
-            Rats destroyed {bushels_rats_ate}, leaving {bushels} bushels in storage.
-            The city owns {land} acres of land.
-            Land is currently worth {land_value} bushels per acre
-            """)
+                O great Hammurabi!
+                You are in year {year} of your ten year rule.
+                In the previous year {deaths} people starved to death.
+                In the previous year {immigrants} poeple entered the kingdom.
+                The poplulation is now {population}.
+                We harvested {harvet} bushels at {harvet_per_acre} per acre.
+                Rats destroyed {bushels_rats_ate}, leaving {bushels} bushels in storage.
+                The city owns {land} acres of land.
+                Land is currently worth {land_value} bushels per acre
+                """)
                 finish_game = False
+    
 
                 
 
@@ -142,7 +148,7 @@ class Hammurabi:
 
     def plagueDeaths(population):
         if random.randint(0,99) < 15:
-            return population/2
+            return math.floor(population/2)
         else:
             return population
     
@@ -153,7 +159,15 @@ class Hammurabi:
             return 0
     
     def uprising(population, howManyPeopleStarved):
-        return (howManyPeopleStarved/population)*100 < 45
+        return (howManyPeopleStarved/population)*100 > 45
+    
+    def game_over(year, population, land):
+        print(f"""
+            O great Hammurabi!
+            Your reign ended early in year {year} of your ten year rule.
+            Your poplulation ended at {population} citizens.
+            Your city owned {land} acres of land.
+            """)
         
 
 
